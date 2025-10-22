@@ -6,7 +6,7 @@
 </script>
 
 <svelte:head>
-	<title>DTT</title>
+	<title>GT</title>
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
