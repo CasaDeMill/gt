@@ -9,7 +9,8 @@ export const POST: RequestHandler = async ({request}) => {
     {
       method: 'POST',
       headers: {
-        'Authorization': 'Basic ' + 'Basic ' + btoa(import.meta.env.VITE_BEARER + ":" + import.meta.env.VITE_PASSWORD)
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Basic ' + btoa(import.meta.env.VITE_USERNAME + ":" + import.meta.env.VITE_PASSWORD)
       },
       body: new URLSearchParams({
         'grant_type': 'client_credentials',
