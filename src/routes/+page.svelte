@@ -2,7 +2,7 @@
   let imageData: any[] = $state([]);
   let selectedIndex: number = $state(0);
   let selectedSubs: string[] = $state([]);
-  let avSubs = $state(['HalfLife', 'Panties']);
+  let avSubs = $state(['HalfLife']);
   let newSub = $state('');
   let loading = $state(false);
 

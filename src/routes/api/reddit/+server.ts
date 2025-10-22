@@ -6,13 +6,7 @@ export const POST: RequestHandler = async ({request}) => {
   const returnArr: any[] = [];
   for (let index = 0; index < subReddits.length; index++) {
     const element = subReddits[index];
-    const options = {
-      headers: {
-        'User-Agent': 'Fuck off'
-      } 
-    };
-    console.log(options);
-    const result = await fetch(`https://www.reddit.com/r/${element}/new.json`, options);
+    const result = await fetch(`https://www.reddit.com/r/${element}/new.json`);
     console.log("result:", result);
     const jsonResponse = await result.json();
     const simpleData = jsonResponse.data.children.map((c: any) => ({
