@@ -2,15 +2,13 @@ import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 
 export const POST: RequestHandler = async ({request}) => {
-  console.log("Request:", request);
   const subReddits: string[] = await request.json();
-  console.log("SubReddits:", subReddits);
   const returnArr: any[] = [];
   for (let index = 0; index < subReddits.length; index++) {
     const element = subReddits[index];
     const result = await fetch(`https://www.reddit.com/r/${element}/new.json`);
+    console.log("result:", result);
     const jsonResponse = await result.json();
-    console.log("JsonRes:", jsonResponse);
     const simpleData = jsonResponse.data.children.map((c: any) => ({
         id: c.data.id,
         gallery: c.data.is_gallery,
