@@ -4,32 +4,10 @@
 
   let imageData: any[] = $state([]);
 
-const getData = () => {
-  fetch("https://www.reddit.com/r/HalfLife/new.json")
-  .then((response) => response.json())
-  .then((x) => {
-    var simpleData = x.data.children.map((c: any) => ({
-      id: c.data.id,
-      gallery: c.data.is_gallery,
-      video: c.data.is_video,
-      spoiler: c.data.spoiler,
-      over18: c.data.over_18,
-      urls: c.data.is_video
-        ? [c.data.secure_media.reddit_video.fallback_url]
-        : c.data.is_gallery
-          ? Object.keys(c.data.media_metadata).map(
-              (m) =>
-                `https://i.redd.it/${m}.${c.data.media_metadata[m].m.split("/")[1]}`,
-            )
-          : c.data.spoiler
-            ? [c.data.url]
-            : [c.data.url],
-    }))
-    var media = simpleData.filter((s: any) => s.urls.every((u: any) => !u.endsWith("/")))
-    var simplifiedMedia = media.map((x: any) => ({ id: x.id, urls: x.urls.map((u: any) => `${u}`) }))
-    console.log(simplifiedMedia)
-    imageData = simplifiedMedia;
-  })
+const getData = async () => {
+  const response = await fetch('/api/reddit', { method: 'GET' });
+
+	imageData = await response.json();
 }
 </script>
 
