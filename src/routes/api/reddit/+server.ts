@@ -10,6 +10,7 @@ export const POST: RequestHandler = async ({request}) => {
     const element = subReddits[index];
     const result = await fetch(`https://www.reddit.com/r/${element}/new.json`);
     const jsonResponse = await result.json();
+    console.log("JsonRes:", jsonResponse);
     const simpleData = jsonResponse.data.children.map((c: any) => ({
         id: c.data.id,
         gallery: c.data.is_gallery,
