@@ -129,19 +129,19 @@
     height: 100dvh;
   }
   .iframer {
-    height: 90dvw;
+    height: 90dvh;
     width: 90dvw;
     border-radius: 5px;
   }
   .image {
-    max-height:90dvw;
+    max-height:90dvh;
     max-width:90dvw;
     height:auto;
     width:auto;
     border-radius: 5px;
   }
   .video {
-    max-height:90dvw;
+    max-height:90dvh;
     max-width:90dvw;
     height:auto;
     width:auto;
