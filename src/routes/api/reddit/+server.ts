@@ -18,10 +18,9 @@ export const POST: RequestHandler = async ({request}) => {
       })
     }
   );
-  console.log(import.meta.env.VITE_USERNAME)
-  console.log(import.meta.env.VITE_PASSWORD)
+
   const tokenResJson = await tokenRes.json();
-  console.log(tokenResJson)
+
   for (let index = 0; index < subReddits.length; index++) {
     const element = subReddits[index];
     const result = await fetch(`https://oauth.reddit.com/r/${element}/new.json`,
@@ -31,7 +30,7 @@ export const POST: RequestHandler = async ({request}) => {
         }
       }
     );
-    console.log("result:", result);
+
     const jsonResponse = await result.json();
     const simpleData = jsonResponse.data.children.map((c: any) => ({
         id: c.data.id,
