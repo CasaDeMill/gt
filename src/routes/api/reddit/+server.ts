@@ -6,7 +6,13 @@ export const POST: RequestHandler = async ({request}) => {
   const returnArr: any[] = [];
   for (let index = 0; index < subReddits.length; index++) {
     const element = subReddits[index];
-    const result = await fetch(`https://www.reddit.com/r/${element}/new.json`, { headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:144.0) Gecko/20100101 Firefox/144.0' } });
+    const result = await fetch(`https://www.reddit.com/r/${element}/new.json`,
+      {
+        headers: {
+          'User-Agent': 'Fuck off'
+        } 
+      }
+    );
     console.log("result:", result);
     const jsonResponse = await result.json();
     const simpleData = jsonResponse.data.children.map((c: any) => ({
@@ -46,6 +52,5 @@ export const POST: RequestHandler = async ({request}) => {
       }
     });
   }
-  console.log("ReturnArr:", returnArr);
   return json(returnArr);
 };
