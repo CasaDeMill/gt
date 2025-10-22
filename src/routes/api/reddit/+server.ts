@@ -6,7 +6,13 @@ export const POST: RequestHandler = async ({request}) => {
   const returnArr: any[] = [];
   for (let index = 0; index < subReddits.length; index++) {
     const element = subReddits[index];
-    const result = await fetch(`https://www.reddit.com/r/${element}/new.json`);
+    const result = await fetch(`https://oauth.reddit.com/r/${element}/new.json`,
+      {
+        headers: {
+          'Authorization': `bearer ${import.meta.env.VITE_BEARER}`
+        }
+      }
+    );
     console.log("result:", result);
     const jsonResponse = await result.json();
     const simpleData = jsonResponse.data.children.map((c: any) => ({
