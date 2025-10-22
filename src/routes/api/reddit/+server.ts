@@ -4,12 +4,28 @@ import type { RequestHandler } from './$types';
 export const POST: RequestHandler = async ({request}) => {
   const subReddits: string[] = await request.json();
   const returnArr: any[] = [];
+
+  const tokenRes = await fetch('https://www.reddit.com/api/v1/access_token',
+    {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Basic ' + 'Basic ' + btoa(import.meta.env.VITE_BEARER + ":" + import.meta.env.VITE_PASSWORD)
+      },
+      body: new URLSearchParams({
+        'grant_type': 'client_credentials',
+        'device_id': import.meta.env.VITE_CLIENT
+      })
+    }
+  );
+
+  const tokenResJson = await tokenRes.json();
+
   for (let index = 0; index < subReddits.length; index++) {
     const element = subReddits[index];
     const result = await fetch(`https://oauth.reddit.com/r/${element}/new.json`,
       {
         headers: {
-          'Authorization': `bearer ${import.meta.env.VITE_BEARER}`
+          'Authorization': `bearer ${tokenResJson.access_token}`
         }
       }
     );
