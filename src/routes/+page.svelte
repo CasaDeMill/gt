@@ -62,9 +62,12 @@
       }
         <!-- svelte-ignore a11y_missing_attribute -->
         <img class="image" src={imageData[selectedIndex].src}/>
+      {:else if imageData[selectedIndex].src.includes("redgifs.com")}
+        <!-- svelte-ignore a11y_missing_attribute -->
+        <iframe class="iframer" src={`https://www.redgifs.com/ifr/${imageData[selectedIndex].src.split('/').pop()}`}></iframe>
       {:else if imageData[selectedIndex].src.includes("youtu.be")}
         <!-- svelte-ignore a11y_missing_attribute -->
-        <iframe class="yotube" src={`https://www.youtube.com/embed/${imageData[selectedIndex].src.split('/').pop()}`}></iframe>
+        <iframe class="iframer" src={`https://www.youtube.com/embed/${imageData[selectedIndex].src.split('/').pop()}`}></iframe>
       {:else}
         <!-- svelte-ignore a11y_media_has_caption -->
         <video class="video" src={imageData[selectedIndex].src} autoplay controls></video>
@@ -125,16 +128,23 @@
     justify-content: space-around;
     height: 100dvh;
   }
-  .youtube {
+  .iframer {
+    height: 90dvw;
     width: 90dvw;
     border-radius: 5px;
   }
   .image {
-    width: 90dvw;
+    max-height:90dvw;
+    max-width:90dvw;
+    height:auto;
+    width:auto;
     border-radius: 5px;
   }
   .video {
-    width: 90dvw;
+    max-height:90dvw;
+    max-width:90dvw;
+    height:auto;
+    width:auto;
     border-radius: 5px;
   }
   button,

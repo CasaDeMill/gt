@@ -46,8 +46,8 @@ export const POST: RequestHandler = async ({request}) => {
                   `https://i.redd.it/${m}.${c.data.media_metadata[m].m.split("/")[1]}`,
               )
             : c.data.spoiler
-              ? [c.data.url.includes("redgifs.com") ? c.data.preview.reddit_video_preview.fallback_url : c.data.url]
-              : [c.data.url.includes("redgifs.com") ? c.data.preview.reddit_video_preview.fallback_url : c.data.url],
+              ? [c.data.url]
+              : [c.data.url],
       }));
 
     const media = simpleData.filter((s: any) => s.urls.every((u: any) => !u.endsWith("/")));
