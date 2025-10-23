@@ -33,64 +33,56 @@
   }
 </script>
 
-<div class="wrapper">
-  {#if imageData.length > 0}
-    <div class="swiper">
-      {#each imageData as image}
-        {#if
-          image.src.endsWith("jpg")
-          || image.src.endsWith("png")
-          || image.src.endsWith("jpeg")
-          || image.src.endsWith("gif")
-        }
-          <!-- svelte-ignore a11y_missing_attribute -->
-          <img loading="lazy" class="image" src={image.src}/>
-        {:else if image.src.includes("redgifs.com")}
-          <!-- svelte-ignore a11y_missing_attribute -->
-          <iframe loading="lazy" class="iframer" src={`https://www.redgifs.com/ifr/${image.src.split('/').pop()}`}></iframe>
-        {:else if image.src.includes("youtu.be")}
-          <!-- svelte-ignore a11y_missing_attribute -->
-          <iframe loading="lazy" class="iframer" src={`https://www.youtube.com/embed/${image.src.split('/').pop()}`}></iframe>
-        {:else}
-          <!-- svelte-ignore a11y_media_has_caption -->
-          <video class="video" src={image.src} controls muted={false}></video>
-        {/if}
-      {/each}
-    </div>
-  {:else}
-    <div class="setupContainer">
-      <h1>Okeeeeej</h1>
-      <MultiSelect bind:selected options={avSubs} allowUserOptions='append' />
-      <button onclick={getData}>
-        GO
-      </button>
-      {#if loading}
-        <progress></progress>
+{#if imageData.length > 0}
+  <div class="swiper">
+    {#each imageData as image}
+      {#if
+        image.src.endsWith("jpg")
+        || image.src.endsWith("png")
+        || image.src.endsWith("jpeg")
+        || image.src.endsWith("gif")
+      }
+        <!-- svelte-ignore a11y_missing_attribute -->
+        <img loading="lazy" class="image" src={image.src}/>
+      {:else if image.src.includes("redgifs.com")}
+        <!-- svelte-ignore a11y_missing_attribute -->
+        <iframe loading="lazy" class="iframer" src={`https://www.redgifs.com/ifr/${image.src.split('/').pop()}`}></iframe>
+      {:else if image.src.includes("youtu.be")}
+        <!-- svelte-ignore a11y_missing_attribute -->
+        <iframe loading="lazy" class="iframer" src={`https://www.youtube.com/embed/${image.src.split('/').pop()}`}></iframe>
+      {:else}
+        <!-- svelte-ignore a11y_media_has_caption -->
+        <video class="video" src={image.src} controls muted={false}></video>
       {/if}
-    </div>
-  {/if}
-</div>
-
+    {/each}
+  </div>
+{:else}
+  <div class="setupContainer">
+    <h1>Okeeeeej</h1>
+    <MultiSelect bind:selected options={avSubs} allowUserOptions='append' />
+    <button onclick={getData}>
+      GO
+    </button>
+    {#if loading}
+      <progress></progress>
+    {/if}
+  </div>
+{/if}
 
 <style>
-  .wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100dvh;
-  }
   .setupContainer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-around;
+    justify-content: flex-start;
     height: 100dvh;
   }
   .iframer {
     height: 90dvh;
     width: 90dvw;
     border-radius: 5px;
+    margin-left: 5dvw;
+    margin-right: 5dvw;
   }
   .image {
     max-height:90dvh;
@@ -98,6 +90,8 @@
     height:auto;
     width:auto;
     border-radius: 5px;
+    margin-left: 5dvw;
+    margin-right: 5dvw;
   }
   .video {
     max-height:90dvh;
@@ -105,9 +99,13 @@
     height:auto;
     width:auto;
     border-radius: 5px;
+    margin-left: 5dvw;
+    margin-right: 5dvw;
   }
   button,
   button:focus {
+    margin-top: auto;
+    margin-bottom: 100px;
     user-select: none;
     font-size: 17px;
     padding: 10px 25px;
@@ -131,22 +129,15 @@
   h1 {
     font-family: "Kinkee";
   }
-  
+
   button,
-  input,
   div {
     font-family: "Georgia";
     color: #330a47;
   }
 
-  input {
-    border-radius: 5px;
-    font-size: 18px;
-    width: 200px;
-    margin-top: 10px;
-  }
-
   progress {
+    margin-bottom: 100px;
     width: 100%;
     accent-color: #330a47;
   }
@@ -157,7 +148,9 @@
 		overflow-y: scroll;
 		scrollbar-width: none;
 		overscroll-behavior: none;
-		
+    align-items: center;
+    justify-content: center;
+    height: 100dvh;
 		scroll-snap-type: x mandatory;
 	}
 	.swiper::-webkit-scrollbar {
@@ -166,6 +159,6 @@
 	.swiper > :global(*) {
 		flex-basis: 100%;
 		flex-shrink: 0;
-		scroll-snap-align: start
+		scroll-snap-align: center;
 	}
 </style>
