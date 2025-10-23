@@ -3,7 +3,19 @@
 
   let imageData: any[] = $state([]);
   let selected: string[] = $state([]);
-  let avSubs = $state(['throatpussy', 'cumonclothes', 'luckypierre']);
+  let avSubs = $state([
+    'throatpussy',
+    'cumonclothes',
+    'luckypierre',
+    'Lillijunexx',
+    'Rubbersissies',
+    'Miso_paradise',
+    'Slave_humiliation',
+    'Trulybrokengirls',
+    'Forceorgasm2',
+    'Facefuck',
+    'Cumsluts'
+  ]);
   let loading = $state(false);
 
   const shuffle = (array: any[]) => {
@@ -42,26 +54,35 @@
         || image.src.endsWith("jpeg")
         || image.src.endsWith("gif")
       }
-        <!-- svelte-ignore a11y_missing_attribute -->
-        <img loading="lazy" class="image" src={image.src}/>
+        <div>
+          <a href={image.redditUrl} target="_blank">{image.title}</a>
+          <!-- svelte-ignore a11y_missing_attribute -->
+          <img loading="lazy" class="image" src={image.src}/>
+        </div>
       {:else if image.src.includes("redgifs.com")}
         <div>
+          <a href={image.redditUrl} target="_blank">{image.title}</a>
           <!-- svelte-ignore a11y_missing_attribute -->
           <iframe loading="lazy" scrolling="no" class="iframer" src={`https://www.redgifs.com/ifr/${image.src.split('/').pop()}`}></iframe>
         </div>
       {:else if image.src.includes("youtu.be")}
         <div>
+          <a href={image.redditUrl} target="_blank">{image.title}</a>
           <!-- svelte-ignore a11y_missing_attribute -->
           <iframe loading="lazy" scrolling="no" class="iframer" src={`https://www.youtube.com/embed/${image.src.split('/').pop()}`}></iframe>
         </div>
       {:else if image.src.includes("youtube.com")}
         <div>
+          <a href={image.redditUrl} target="_blank">{image.title}</a>
           <!-- svelte-ignore a11y_missing_attribute -->
           <iframe loading="lazy" scrolling="no" class="iframer" src={`https://www.youtube.com/embed/${image.src.split('v=').pop()}`}></iframe>
         </div>
       {:else}
-        <!-- svelte-ignore a11y_media_has_caption -->
-        <video class="video" src={image.src} controls muted={false}></video>
+        <div>
+          <a href={image.redditUrl} target="_blank">{image.title}</a>
+          <!-- svelte-ignore a11y_media_has_caption -->
+          <video class="video" src={image.src} controls muted={false}></video>
+        </div>
       {/if}
     {/each}
   </div>

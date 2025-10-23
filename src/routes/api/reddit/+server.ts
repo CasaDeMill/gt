@@ -33,6 +33,8 @@ export const POST: RequestHandler = async ({request}) => {
 
     const jsonResponse = await result.json();
     const simpleData = jsonResponse.data.children.map((c: any) => ({
+        redditUrl: c.data.url,
+        title: c.data.title,
         id: c.data.id,
         gallery: c.data.is_gallery,
         video: c.data.is_video,
@@ -57,14 +59,18 @@ export const POST: RequestHandler = async ({request}) => {
         element.urls.forEach((url: any) => {
           returnArr.push({
             id: element.id,
-            src: url
+            src: url,
+            title: element.title,
+            redditUrl: element.redditUrl
           });
         });
       }
       else {
         returnArr.push({
           id: element.id,
-          src: element.urls[0]
+          src: element.urls[0],
+          title: element.title,
+          redditUrl: element.redditUrl
         });
       }
     });
