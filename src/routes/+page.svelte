@@ -78,7 +78,7 @@
     height: 100dvh;
   }
   .iframer {
-    height: 90dvh;
+    height: 70dvh;
     width: auto;
     border-radius: 5px;
   }
