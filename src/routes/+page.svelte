@@ -1,9 +1,9 @@
 <script lang="ts">
+  import MultiSelect from 'svelte-multiselect'
+
   let imageData: any[] = $state([]);
-  let selectedIndex: number = $state(0);
-  let selectedSubs: string[] = $state([]);
+  let selected: string[] = $state([]);
   let avSubs = $state(['throatpussy', 'cumonclothes', 'luckypierre']);
-  let newSub = $state('');
   let loading = $state(false);
 
   const shuffle = (array: any[]) => {
@@ -22,7 +22,7 @@
   const getData = async () => {
     loading = true;
     const response = await fetch('/api/reddit', { method: 'POST',
-			body: JSON.stringify(selectedSubs),
+			body: JSON.stringify(selected),
 			headers: {
 				'Content-Type': 'application/json'
 			} });
@@ -31,71 +31,36 @@
     shuffle(responseArr);
     imageData = responseArr;
   }
-
-  const incIndex = () => {
-    if (selectedIndex < imageData.length - 1) {
-      selectedIndex++;
-    }
-  }
-
-  const decIndex = () => {
-    if (selectedIndex >= 1) {
-      selectedIndex--;
-    }
-  }
-
-  const addNew = () => {
-    avSubs.push(newSub);
-    selectedSubs.push(newSub);
-    newSub = "";
-  }
 </script>
 
 <div class="wrapper">
   {#if imageData.length > 0}
-    <div>
-      {#if
-        imageData[selectedIndex].src.endsWith("jpg")
-        || imageData[selectedIndex].src.endsWith("png")
-        || imageData[selectedIndex].src.endsWith("jpeg")
-        || imageData[selectedIndex].src.endsWith("gif")
-      }
-        <!-- svelte-ignore a11y_missing_attribute -->
-        <img class="image" src={imageData[selectedIndex].src}/>
-      {:else if imageData[selectedIndex].src.includes("redgifs.com")}
-        <!-- svelte-ignore a11y_missing_attribute -->
-        <iframe class="iframer" src={`https://www.redgifs.com/ifr/${imageData[selectedIndex].src.split('/').pop()}`}></iframe>
-      {:else if imageData[selectedIndex].src.includes("youtu.be")}
-        <!-- svelte-ignore a11y_missing_attribute -->
-        <iframe class="iframer" src={`https://www.youtube.com/embed/${imageData[selectedIndex].src.split('/').pop()}`}></iframe>
-      {:else}
-        <!-- svelte-ignore a11y_media_has_caption -->
-        <video class="video" src={imageData[selectedIndex].src} autoplay controls></video>
-      {/if}
-      <div class="buttonContainer">
-        <button onclick={decIndex}>Previous</button>
-        <button onclick={incIndex}>Next</button>
-      </div>
+    <div class="swiper">
+      {#each imageData as image}
+        {#if
+          image.src.endsWith("jpg")
+          || image.src.endsWith("png")
+          || image.src.endsWith("jpeg")
+          || image.src.endsWith("gif")
+        }
+          <!-- svelte-ignore a11y_missing_attribute -->
+          <img loading="lazy" class="image" src={image.src}/>
+        {:else if image.src.includes("redgifs.com")}
+          <!-- svelte-ignore a11y_missing_attribute -->
+          <iframe loading="lazy" class="iframer" src={`https://www.redgifs.com/ifr/${image.src.split('/').pop()}`}></iframe>
+        {:else if image.src.includes("youtu.be")}
+          <!-- svelte-ignore a11y_missing_attribute -->
+          <iframe loading="lazy" class="iframer" src={`https://www.youtube.com/embed/${image.src.split('/').pop()}`}></iframe>
+        {:else}
+          <!-- svelte-ignore a11y_media_has_caption -->
+          <video class="video" src={image.src} controls muted={false}></video>
+        {/if}
+      {/each}
     </div>
   {:else}
     <div class="setupContainer">
       <h1>Okeeeeej</h1>
-      <input bind:value={newSub}>
-      <button onclick={addNew}>
-        Add
-      </button>
-      {#each avSubs as sub}
-        <label>
-          <input
-            type="checkbox"
-            name="sub"
-            value={sub}
-            bind:group={selectedSubs}
-          />
-
-          {sub}
-        </label>
-      {/each}
+      <MultiSelect bind:selected options={avSubs} allowUserOptions='append' />
       <button onclick={getData}>
         GO
       </button>
@@ -114,12 +79,6 @@
     align-items: center;
     justify-content: center;
     height: 100dvh;
-  }
-  .buttonContainer {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
   }
   .setupContainer {
     display: flex;
@@ -172,24 +131,12 @@
   h1 {
     font-family: "Kinkee";
   }
-
-  p {
-    width: 75%;
-  }
-
-  p,
-  span,
+  
   button,
   input,
   div {
     font-family: "Georgia";
     color: #330a47;
-  }
-
-  input[type="checkbox"] {
-    accent-color: #8634af;
-    width: 25px;
-    height: 25px;
   }
 
   input {
@@ -203,4 +150,22 @@
     width: 100%;
     accent-color: #330a47;
   }
+
+  .swiper {
+		width: 100%;
+		display: flex;
+		overflow-y: scroll;
+		scrollbar-width: none;
+		overscroll-behavior: none;
+		
+		scroll-snap-type: x mandatory;
+	}
+	.swiper::-webkit-scrollbar {
+		display: none;
+	}
+	.swiper > :global(*) {
+		flex-basis: 100%;
+		flex-shrink: 0;
+		scroll-snap-align: start
+	}
 </style>
