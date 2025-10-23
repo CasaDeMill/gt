@@ -55,31 +55,51 @@
         || image.src.endsWith("gif")
       }
         <div>
-          <a href={image.redditUrl} target="_blank">{image.title}</a>
+          <a href={image.redditUrl} target="_blank">
+            <button class="linkButton">
+              {image.title}
+            </button>
+          </a>
           <!-- svelte-ignore a11y_missing_attribute -->
           <img loading="lazy" class="image" src={image.src}/>
         </div>
       {:else if image.src.includes("redgifs.com")}
         <div>
-          <a href={image.redditUrl} target="_blank">{image.title}</a>
+          <a href={image.redditUrl} target="_blank">
+            <button class="linkButton">
+              {image.title}
+            </button>
+          </a>
           <!-- svelte-ignore a11y_missing_attribute -->
           <iframe loading="lazy" scrolling="no" class="iframer" src={`https://www.redgifs.com/ifr/${image.src.split('/').pop()}`}></iframe>
         </div>
       {:else if image.src.includes("youtu.be")}
         <div>
-          <a href={image.redditUrl} target="_blank">{image.title}</a>
+          <a href={image.redditUrl} target="_blank">
+            <button class="linkButton">
+              {image.title}
+            </button>
+          </a>
           <!-- svelte-ignore a11y_missing_attribute -->
           <iframe loading="lazy" scrolling="no" class="iframer" src={`https://www.youtube.com/embed/${image.src.split('/').pop()}`}></iframe>
         </div>
       {:else if image.src.includes("youtube.com")}
         <div>
-          <a href={image.redditUrl} target="_blank">{image.title}</a>
+          <a href={image.redditUrl} target="_blank">
+            <button class="linkButton">
+              {image.title}
+            </button>
+          </a>
           <!-- svelte-ignore a11y_missing_attribute -->
           <iframe loading="lazy" scrolling="no" class="iframer" src={`https://www.youtube.com/embed/${image.src.split('v=').pop()}`}></iframe>
         </div>
       {:else}
         <div>
-          <a href={image.redditUrl} target="_blank">{image.title}</a>
+          <a href={image.redditUrl} target="_blank">
+            <button class="linkButton">
+              {image.title}
+            </button>
+          </a>
           <!-- svelte-ignore a11y_media_has_caption -->
           <video class="video" src={image.src} controls muted={false}></video>
         </div>
@@ -90,7 +110,7 @@
   <div class="setupContainer">
     <h1>Okeeeeej</h1>
     <MultiSelect bind:selected options={avSubs} allowUserOptions='append' />
-    <button onclick={getData}>
+    <button class="goButton" onclick={getData}>
       GO
     </button>
     {#if loading}
@@ -126,8 +146,10 @@
     width:auto;
     border-radius: 5px;
   }
-  button,
-  button:focus {
+
+  .goButton {
+    font-family: "Georgia";
+    color: #330a47;
     margin-top: auto;
     margin-bottom: 100px;
     user-select: none;
@@ -144,7 +166,7 @@
     transition-timing-function: linear;
   }
 
-  button:active {
+  .goButton:active {
     user-select: none;
     transform: translate(0, 0);
     border-bottom: 2px solid rgb(50, 50, 50);
@@ -154,10 +176,33 @@
     font-family: "Kinkee";
   }
 
-  button,
   div {
     font-family: "Georgia";
     color: #330a47;
+  }
+
+  .linkButton {
+    font-family: "Georgia";
+    color: #330a47;
+    user-select: none;
+    width: 100%;
+    font-size: 12px;
+    padding: 10px 25px;
+    border-radius: 0.7rem;
+    background-image: linear-gradient(rgb(214, 202, 254), rgb(158, 129, 254));
+    border: 2px solid rgb(50, 50, 50);
+    border-bottom: 5px solid rgb(50, 50, 50);
+    box-shadow: 0px 1px 6px 0px rgb(158, 129, 254);
+    transform: translate(0, -3px);
+    cursor: pointer;
+    transition: 0.2s;
+    transition-timing-function: linear;
+  }
+
+  .linkButton:active {
+    user-select: none;
+    transform: translate(0, 0);
+    border-bottom: 2px solid rgb(50, 50, 50);
   }
 
   progress {
