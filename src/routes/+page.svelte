@@ -143,7 +143,7 @@
 		overscroll-behavior-x: none;
     align-items: center;
     height: 100dvh;
-		scroll-snap-type: x mandatory;
+		scroll-snap-type: x proximity;
     scroll-snap-stop: always;
 	}
 	.swiper::-webkit-scrollbar {
