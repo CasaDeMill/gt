@@ -79,7 +79,7 @@
   }
   .iframer {
     height: 90dvh;
-    width: 90dvw;
+    width: auto;
     border-radius: 5px;
   }
   .image {
@@ -137,13 +137,11 @@
   }
 
   .swiper {
-		width: 100%;
 		display: flex;
 		overflow-y: scroll;
-		scrollbar-width: none;
+		/scrollbar-width: none;
 		overscroll-behavior-x: none;
     align-items: center;
-    justify-content: center;
     height: 100dvh;
 		scroll-snap-type: x mandatory;
     scroll-snap-stop: always;
@@ -152,10 +150,9 @@
 		display: none;
 	}
 	.swiper > :global(*) {
-		flex-basis: 100%;
-		flex-shrink: 0;
 		scroll-snap-align: center;
     margin-left: 5dvw;
     margin-right: 5dvw;
+    scroll-padding: 40px;
 	}
 </style>
