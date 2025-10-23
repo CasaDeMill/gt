@@ -81,8 +81,6 @@
     height: 90dvh;
     width: 90dvw;
     border-radius: 5px;
-    /* margin-left: 5dvw;
-    margin-right: 5dvw; */
   }
   .image {
     max-height:90dvh;
@@ -90,8 +88,6 @@
     height:auto;
     width:auto;
     border-radius: 5px;
-    /* margin-left: 5dvw;
-    margin-right: 5dvw; */
   }
   .video {
     max-height:90dvh;
@@ -99,8 +95,6 @@
     height:auto;
     width:auto;
     border-radius: 5px;
-    /* margin-left: 5dvw;
-    margin-right: 5dvw; */
   }
   button,
   button:focus {
@@ -147,11 +141,13 @@
 		display: flex;
 		overflow-y: scroll;
 		scrollbar-width: none;
-		overscroll-behavior-x: contain;
+		overscroll-behavior-x: none;
     align-items: center;
     justify-content: center;
     height: 100dvh;
 		scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scroll-snap-stop: always;
 	}
 	.swiper::-webkit-scrollbar {
 		display: none;
@@ -160,5 +156,7 @@
 		flex-basis: 100%;
 		flex-shrink: 0;
 		scroll-snap-align: center;
+    margin-left: 5dvw;
+    margin-right: 5dvw;
 	}
 </style>
