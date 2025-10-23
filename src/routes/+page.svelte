@@ -45,11 +45,20 @@
         <!-- svelte-ignore a11y_missing_attribute -->
         <img loading="lazy" class="image" src={image.src}/>
       {:else if image.src.includes("redgifs.com")}
-        <!-- svelte-ignore a11y_missing_attribute -->
-        <iframe loading="lazy" class="iframer" src={`https://www.redgifs.com/ifr/${image.src.split('/').pop()}`}></iframe>
+        <div>
+          <!-- svelte-ignore a11y_missing_attribute -->
+          <iframe loading="lazy" scrolling="no" class="iframer" src={`https://www.redgifs.com/ifr/${image.src.split('/').pop()}`}></iframe>
+        </div>
       {:else if image.src.includes("youtu.be")}
-        <!-- svelte-ignore a11y_missing_attribute -->
-        <iframe loading="lazy" class="iframer" src={`https://www.youtube.com/embed/${image.src.split('/').pop()}`}></iframe>
+        <div>
+          <!-- svelte-ignore a11y_missing_attribute -->
+          <iframe loading="lazy" scrolling="no" class="iframer" src={`https://www.youtube.com/embed/${image.src.split('/').pop()}`}></iframe>
+        </div>
+      {:else if image.src.includes("youtube.com")}
+        <div>
+          <!-- svelte-ignore a11y_missing_attribute -->
+          <iframe loading="lazy" scrolling="no" class="iframer" src={`https://www.youtube.com/embed/${image.src.split('v=').pop()}`}></iframe>
+        </div>
       {:else}
         <!-- svelte-ignore a11y_media_has_caption -->
         <video class="video" src={image.src} controls muted={false}></video>
@@ -78,7 +87,7 @@
     height: 100dvh;
   }
   .iframer {
-    height: 70dvh;
+    height: 90dvh;
     width: auto;
     border-radius: 5px;
   }
