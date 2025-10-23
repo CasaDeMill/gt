@@ -144,12 +144,12 @@
     align-items: center;
     height: 100dvh;
 		scroll-snap-type: x mandatory;
-    scroll-snap-stop: always;
 	}
 	.swiper::-webkit-scrollbar {
 		display: none;
 	}
 	.swiper > :global(*) {
+    scroll-snap-stop: always;
 		scroll-snap-align: center;
     margin-left: 5dvw;
     margin-right: 5dvw;
