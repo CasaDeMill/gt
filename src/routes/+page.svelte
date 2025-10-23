@@ -1,6 +1,5 @@
 <script lang="ts">
   import MultiSelect from 'svelte-multiselect'
-
   let qNew: boolean = $state(true);
   let qBest: boolean = $state(false);
   let qTopMonth: boolean = $state(false);
@@ -21,6 +20,8 @@
     'Cumsluts'
   ]);
   let loading = $state(false);
+  let fetchBlocked: boolean = $state(false);
+  let count: number = $state(0);
 
   const shuffle = (array: any[]) => {
     let currentIndex = array.length;
@@ -35,22 +36,39 @@
     }
   }
 
-  const getData = async () => {
+  const getData = async (afters: any[] = []) => {
+    fetchBlocked = true;
     loading = true;
     const response = await fetch('/api/reddit', { method: 'POST',
-			body: JSON.stringify({selected, qNew, qBest, qTopMonth, qTopAll}),
+			body: JSON.stringify({selected, qNew, qBest, qTopMonth, qTopAll, afters, count: count * 25}),
 			headers: {
 				'Content-Type': 'application/json'
 			} });
     var responseArr = await response.json();
     loading = false;
     shuffle(responseArr);
-    imageData = responseArr;
+    imageData = [ ...imageData, ...responseArr ];
+    fetchBlocked = false;
+  }
+
+  const getMoreData = (percentage: number, scrollWidth: number) => {
+    if (percentage > 80 && !fetchBlocked && scrollWidth > 5000) {
+      count++;
+      getData(imageData.map(x => ({
+        subReddit: x.subReddit,
+        after: x.after
+      })));
+    }
   }
 </script>
 
 {#if imageData.length > 0}
-  <div class="swiper">
+  <div
+    class="swiper"
+    onscroll={
+      (e: any)=>getMoreData((e.target.scrollLeft / e.target.scrollWidth) * 100, e.target.scrollWidth)
+    }
+  >
     {#each imageData as image}
       {#if
         image.src.endsWith("jpg")
@@ -132,7 +150,7 @@
         Top all time
       </label>
     </div>
-    <button class="goButton" onclick={getData}>
+    <button class="goButton" onclick={() => getData()}>
       GO
     </button>
     {#if loading}

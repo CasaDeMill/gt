@@ -8,6 +8,8 @@ export const POST: RequestHandler = async ({request}) => {
   const qBest: boolean = requestObj.qBest;
   const qTopMonth: boolean = requestObj.qTopMonth;
   const qTopAll: boolean = requestObj.qTopAll;
+  const afters: any[] = requestObj.afters;
+  const count: number = requestObj.count;
   const returnArr: any[] = [];
 
   const tokenRes = await fetch('https://www.reddit.com/api/v1/access_token',
@@ -28,19 +30,36 @@ export const POST: RequestHandler = async ({request}) => {
 
   for (let index = 0; index < subReddits.length; index++) {
     const element = subReddits[index];
-    if (qNew)
-      await handleFetch(`https://oauth.reddit.com/r/${element}/new.json`, returnArr, tokenResJson.access_token);
-    if (qBest)
-      await handleFetch(`https://oauth.reddit.com/r/${element}/best.json`, returnArr, tokenResJson.access_token);
-    if (qTopMonth)
-      await handleFetch(`https://oauth.reddit.com/r/${element}/top.json?t=month`, returnArr, tokenResJson.access_token);
-    if (qTopAll)
-      await handleFetch(`https://oauth.reddit.com/r/${element}/top.json?t=all`, returnArr, tokenResJson.access_token);
+    const afterString = afters[afters.findLastIndex(x => x.subReddit === element)]?.after;
+    if (qNew) {
+      if (afters.length > 0)
+        await handleFetch(`https://oauth.reddit.com/r/${element}/new.json?count=${count}&after=${afterString}`, returnArr, tokenResJson.access_token, element);
+      else
+        await handleFetch(`https://oauth.reddit.com/r/${element}/new.json`, returnArr, tokenResJson.access_token, element);
+    }
+    if (qBest) {
+      if (afters.length > 0)
+        await handleFetch(`https://oauth.reddit.com/r/${element}/best.json?count=${count}&after=${afterString}`, returnArr, tokenResJson.access_token, element);
+      else
+        await handleFetch(`https://oauth.reddit.com/r/${element}/best.json`, returnArr, tokenResJson.access_token, element);
+    }
+    if (qTopMonth) {
+      if (afters.length > 0)
+        await handleFetch(`https://oauth.reddit.com/r/${element}/top.json?t=month&count=${count}&after=${afterString}`, returnArr, tokenResJson.access_token, element);
+      else
+        await handleFetch(`https://oauth.reddit.com/r/${element}/top.json?t=month`, returnArr, tokenResJson.access_token, element);
+    }
+    if (qTopAll) {
+      if (afters.length > 0)
+        await handleFetch(`https://oauth.reddit.com/r/${element}/top.json?t=all&count=${count}&after=${afterString}`, returnArr, tokenResJson.access_token, element);
+      else
+        await handleFetch(`https://oauth.reddit.com/r/${element}/top.json?t=all`, returnArr, tokenResJson.access_token, element);
+    }
   }
   return json(returnArr);
 };
 
-const handleFetch = async (url: string, returnArr: any[], accessToken: string) => {
+const handleFetch = async (url: string, returnArr: any[], accessToken: string, subReddit: string) => {
   const result = await fetch(url,
     {
       headers: {
@@ -52,6 +71,8 @@ const handleFetch = async (url: string, returnArr: any[], accessToken: string) =
   const jsonResponse = await result.json();
   const simpleData = jsonResponse.data.children.map((c: any) => ({
     redditUrl: `https://reddit.com${c.data.permalink}`,
+    subReddit: subReddit, 
+    after: jsonResponse.data.after,
     title: c.data.title,
     id: c.data.id,
     gallery: c.data.is_gallery,
@@ -79,7 +100,9 @@ const handleFetch = async (url: string, returnArr: any[], accessToken: string) =
           id: element.id,
           src: url,
           title: element.title,
-          redditUrl: element.redditUrl
+          redditUrl: element.redditUrl,
+          after: element.after,
+          subReddit: element.subReddit,
         });
       });
     }
@@ -88,7 +111,9 @@ const handleFetch = async (url: string, returnArr: any[], accessToken: string) =
         id: element.id,
         src: element.urls[0],
         title: element.title,
-        redditUrl: element.redditUrl
+        redditUrl: element.redditUrl,
+        after: element.after,
+        subReddit: element.subReddit,
       });
     }
   });
