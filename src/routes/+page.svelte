@@ -1,6 +1,10 @@
 <script lang="ts">
   import MultiSelect from 'svelte-multiselect'
 
+  let qNew: boolean = $state(true);
+  let qBest: boolean = $state(false);
+  let qTopMonth: boolean = $state(false);
+  let qTopAll: boolean = $state(false);
   let imageData: any[] = $state([]);
   let selected: string[] = $state([]);
   let avSubs = $state([
@@ -34,7 +38,7 @@
   const getData = async () => {
     loading = true;
     const response = await fetch('/api/reddit', { method: 'POST',
-			body: JSON.stringify(selected),
+			body: JSON.stringify({selected, qNew, qBest, qTopMonth, qTopAll}),
 			headers: {
 				'Content-Type': 'application/json'
 			} });
@@ -110,6 +114,24 @@
   <div class="setupContainer">
     <h1>Okeeeeej</h1>
     <MultiSelect bind:selected options={avSubs} allowUserOptions='append' />
+    <div class="settingsWrapper">
+      <label>
+        <input id="punish" type="checkbox" bind:checked={qNew} />
+        New
+      </label>
+      <label>
+        <input id="punish" type="checkbox" bind:checked={qBest} />
+        Best
+      </label>
+      <label>
+        <input id="punish" type="checkbox" bind:checked={qTopMonth} />
+        Top this month
+      </label>
+      <label>
+        <input id="punish" type="checkbox" bind:checked={qTopAll} />
+        Top all time
+      </label>
+    </div>
     <button class="goButton" onclick={getData}>
       GO
     </button>
@@ -120,6 +142,11 @@
 {/if}
 
 <style>
+  .settingsWrapper {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20dvh;
+  }
   .setupContainer {
     display: flex;
     flex-direction: column;
@@ -203,6 +230,12 @@
     user-select: none;
     transform: translate(0, 0);
     border-bottom: 2px solid rgb(50, 50, 50);
+  }
+
+  input[type="checkbox"] {
+    accent-color: #8634af;
+    width: 25px;
+    height: 25px;
   }
 
   progress {
