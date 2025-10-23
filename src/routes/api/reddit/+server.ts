@@ -33,7 +33,7 @@ export const POST: RequestHandler = async ({request}) => {
 
     const jsonResponse = await result.json();
     const simpleData = jsonResponse.data.children.map((c: any) => ({
-        redditUrl: c.data.url,
+        redditUrl: `https://reddit.com${c.data.permalink}`,
         title: c.data.title,
         id: c.data.id,
         gallery: c.data.is_gallery,
