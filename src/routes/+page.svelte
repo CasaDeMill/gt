@@ -146,7 +146,6 @@
     justify-content: center;
     height: 100dvh;
 		scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
     scroll-snap-stop: always;
 	}
 	.swiper::-webkit-scrollbar {
