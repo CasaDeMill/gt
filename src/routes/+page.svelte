@@ -139,7 +139,7 @@
   .swiper {
 		display: flex;
 		overflow-y: scroll;
-		/scrollbar-width: none;
+		scrollbar-width: none;
 		overscroll-behavior-x: none;
     align-items: center;
     height: 100dvh;
