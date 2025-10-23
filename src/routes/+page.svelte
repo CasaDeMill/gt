@@ -153,6 +153,5 @@
 		scroll-snap-align: center;
     margin-left: 5dvw;
     margin-right: 5dvw;
-    scroll-padding: 40px;
 	}
 </style>
