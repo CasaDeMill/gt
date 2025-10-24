@@ -85,6 +85,16 @@
           <!-- svelte-ignore a11y_missing_attribute -->
           <img loading="lazy" class="image" src={image.src}/>
         </div>
+      {:else if image.src.includes("pornhub.com")}
+        <div>
+          <a href={image.redditUrl} target="_blank">
+            <button class="linkButton">
+              {image.title}
+            </button>
+          </a>
+          <!-- svelte-ignore a11y_missing_attribute -->
+          <iframe allowfullscreen loading ="lazy" scrolling="no" class="iframer" src={`https://www.pornhub.com/embed/${image.src.split('viewkey=').pop()}`}></iframe>
+        </div>
       {:else if image.src.includes("bondagevalley.cc")}
         <div>
           <a href={image.redditUrl} target="_blank">
