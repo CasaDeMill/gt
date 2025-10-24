@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { USER, PASSWORD, CLIENT } from '$env/dynamic/private';
+import { USERNAME, PASSWORD, CLIENT } from '$env/dynamic/private';
 
 export const POST: RequestHandler = async ({request}) => {
   const requestObj = await request.json();
@@ -18,7 +18,7 @@ export const POST: RequestHandler = async ({request}) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': 'Basic ' + btoa(USER + ":" + PASSWORD)
+        'Authorization': 'Basic ' + btoa(USERNAME + ":" + PASSWORD)
       },
       body: new URLSearchParams({
         'grant_type': 'client_credentials',
