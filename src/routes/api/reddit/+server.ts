@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { USER, PASSWORD, CLIENT } from '$env/static/private';
+import { USER, PASSWORD, CLIENT } from '$env/dynamic/private';
 
 export const POST: RequestHandler = async ({request}) => {
   const requestObj = await request.json();
