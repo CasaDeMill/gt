@@ -1,6 +1,6 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { REDDIT_USERNAME, REDDIT_PASSWORD, CLIENT_ID } from '$env/dynamic/private';
+import { env } from '$env/dynamic/private';
 
 export const POST: RequestHandler = async ({request}) => {
   const requestObj = await request.json();
@@ -18,11 +18,11 @@ export const POST: RequestHandler = async ({request}) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': 'Basic ' + btoa(REDDIT_USERNAME + ":" + REDDIT_PASSWORD)
+        'Authorization': 'Basic ' + btoa(env.REDDIT_USERNAME + ":" + env.REDDIT_PASSWORD)
       },
       body: new URLSearchParams({
         'grant_type': 'client_credentials',
-        'device_id': CLIENT_ID
+        'device_id': env.CLIENT_ID
       })
     }
   );
