@@ -70,27 +70,29 @@ const handleFetch = async (url: string, returnArr: any[], accessToken: string, s
   );
 
   const jsonResponse = await result.json();
-  const simpleData = jsonResponse.data.children.map((c: any) => ({
-    redditUrl: `https://reddit.com${c.data.permalink}`,
-    subReddit: subReddit, 
-    after: jsonResponse.data.after,
-    title: c.data.title,
-    id: c.data.id,
-    gallery: c.data.is_gallery,
-    video: c.data.is_video,
-    spoiler: c.data.spoiler,
-    over18: c.data.over_18,
-    urls: c.data.is_video
-      ? [c.data.secure_media.reddit_video.fallback_url]
-      : c.data.is_gallery
-        ? Object.keys(c.data.media_metadata).map(
-            (m) =>
-              `https://i.redd.it/${m}.${c.data.media_metadata[m].m.split("/")[1]}`,
-          )
-        : c.data.spoiler
-          ? [c.data.url]
-          : [c.data.url],
-  }));
+  const simpleData = jsonResponse.data.children.map((c: any) => {
+    const dataObj = c.data.crosspost_parent_list?.length > 0 && c.data.url?.toLowerCase().includes('gallery') ? c.data.crosspost_parent_list[0] : c.data;
+    return {
+      redditUrl: `https://reddit.com${c.data.permalink}`,
+      subReddit: subReddit, 
+      after: jsonResponse.data.after,
+      title: c.data.title,
+      id: c.data.id,
+      gallery: dataObj.is_gallery,
+      video: dataObj.is_video,
+      spoiler: dataObj.spoiler,
+      over18: dataObj.over_18,
+      urls: dataObj.is_video
+        ? [dataObj.secure_media.reddit_video.fallback_url]
+        : dataObj.is_gallery
+          ? Object.keys(dataObj.media_metadata).map(
+              (m) =>
+                `https://i.redd.it/${m}.${dataObj.media_metadata[m].m.split("/")[1]}`,
+            )
+          : dataObj.spoiler
+            ? [dataObj.url]
+            : [dataObj.url],
+  }});
 
   const media = simpleData.filter((s: any) => s.urls.every((u: any) => !u.endsWith("/")));
 

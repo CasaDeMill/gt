@@ -85,6 +85,16 @@
           <!-- svelte-ignore a11y_missing_attribute -->
           <img loading="lazy" class="image" src={image.src}/>
         </div>
+      {:else if image.src.includes("bondagevalley.cc")}
+        <div>
+          <a href={image.redditUrl} target="_blank">
+            <button class="linkButton">
+              {image.title}
+            </button>
+          </a>
+          <!-- svelte-ignore a11y_missing_attribute -->
+          <iframe allowfullscreen loading ="lazy" scrolling="no" class="iframer" src={`https://bondagevalley.cc/embed/${image.src.split('_').pop().split('.html')[0]}?color=8c0000`}></iframe>
+        </div>
       {:else if image.src.includes("redgifs.com")}
         <div>
           <a href={image.redditUrl} target="_blank">
@@ -93,7 +103,7 @@
             </button>
           </a>
           <!-- svelte-ignore a11y_missing_attribute -->
-          <iframe loading="lazy" scrolling="no" class="iframer" src={`https://www.redgifs.com/ifr/${image.src.split('/').pop()}`}></iframe>
+          <iframe allowfullscreen loading="lazy" scrolling="no" class="iframer" src={`https://www.redgifs.com/ifr/${image.src.split('/').pop()}`}></iframe>
         </div>
       {:else if image.src.includes("youtu.be")}
         <div>
@@ -103,7 +113,7 @@
             </button>
           </a>
           <!-- svelte-ignore a11y_missing_attribute -->
-          <iframe loading="lazy" scrolling="no" class="iframer" src={`https://www.youtube.com/embed/${image.src.split('/').pop()}`}></iframe>
+          <iframe allowfullscreen loading="lazy" scrolling="no" class="iframer" src={`https://www.youtube.com/embed/${image.src.split('/').pop()}`}></iframe>
         </div>
       {:else if image.src.includes("youtube.com")}
         <div>
@@ -113,7 +123,7 @@
             </button>
           </a>
           <!-- svelte-ignore a11y_missing_attribute -->
-          <iframe loading="lazy" scrolling="no" class="iframer" src={`https://www.youtube.com/embed/${image.src.split('v=').pop()}`}></iframe>
+          <iframe allowfullscreen loading="lazy" scrolling="no" class="iframer" src={`https://www.youtube.com/embed/${image.src.split('v=').pop()}`}></iframe>
         </div>
       {:else}
         <div>
@@ -123,7 +133,7 @@
             </button>
           </a>
           <!-- svelte-ignore a11y_media_has_caption -->
-          <video class="video" src={image.src} controls muted={false}></video>
+          <video class="video" src={image.src} controls loop muted={false}></video>
         </div>
       {/if}
     {/each}
