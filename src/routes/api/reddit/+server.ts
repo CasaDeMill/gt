@@ -1,5 +1,6 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
+import { USER, PASSWORD, CLIENT } from '$env/static/private';
 
 export const POST: RequestHandler = async ({request}) => {
   const requestObj = await request.json();
@@ -17,11 +18,11 @@ export const POST: RequestHandler = async ({request}) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': 'Basic ' + btoa(import.meta.env.VITE_USERNAME + ":" + import.meta.env.VITE_PASSWORD)
+        'Authorization': 'Basic ' + btoa(USER + ":" + PASSWORD)
       },
       body: new URLSearchParams({
         'grant_type': 'client_credentials',
-        'device_id': import.meta.env.VITE_CLIENT
+        'device_id': CLIENT
       })
     }
   );
