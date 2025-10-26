@@ -154,15 +154,15 @@ const getUrl = (category: string, element: string, afters: any[], count: number,
   {
     if (element.includes('r/')) {
       if (afters.length > 0)
-        return `https://oauth.reddit.com/${element}/top.json?count=${count}&after=${afterString}`;
+        return `https://oauth.reddit.com/${element}/top.json?t=month&count=${count}&after=${afterString}`;
       else
-        return `https://oauth.reddit.com/${element}/top.json`;
+        return `https://oauth.reddit.com/${element}/top.json?t=month`;
     }
     if (element.includes('u/')) {
       if (afters.length > 0)
-        return `https://oauth.reddit.com/${element}.json?sort=top&count=${count}&after=${afterString}`;
+        return `https://oauth.reddit.com/${element}.json?sort=top&t=month&count=${count}&after=${afterString}`;
       else
-        return `https://oauth.reddit.com/${element}.json?sort=top`;
+        return `https://oauth.reddit.com/${element}.json?sort=top&t=month`;
     }
   }
   if (category === "qTopAll")
@@ -171,7 +171,7 @@ const getUrl = (category: string, element: string, afters: any[], count: number,
       if (afters.length > 0)
         return `https://oauth.reddit.com/${element}/top.json?t=all&count=${count}&after=${afterString}`;
       else
-        return `https://oauth.reddit.com/${element}/top.json&t=month`;
+        return `https://oauth.reddit.com/${element}/top.json&t=all`;
     }
     if (element.includes('u/')) {
       if (afters.length > 0)
