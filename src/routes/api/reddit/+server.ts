@@ -32,29 +32,26 @@ export const POST: RequestHandler = async ({request}) => {
   for (let index = 0; index < subReddits.length; index++) {
     const element = subReddits[index];
     const afterString = afters[afters.findLastIndex(x => x.subReddit === element)]?.after;
-    if (qNew) {
+
+    if (!element.includes('u/') && !element.includes('/r')){
       if (afters.length > 0)
-        await handleFetch(`https://oauth.reddit.com/r/${element}/new.json?count=${count}&after=${afterString}`, returnArr, tokenResJson.access_token, element);
+        await handleFetch(`https://oauth.reddit.com/search.json?q=${element}&count=${count}&after=${afterString}&include_over_18=on`, returnArr, tokenResJson.access_token, element);
       else
-        await handleFetch(`https://oauth.reddit.com/r/${element}/new.json`, returnArr, tokenResJson.access_token, element);
+        await handleFetch(`https://oauth.reddit.com/search.json?q=${element}&include_over_18=on`, returnArr, tokenResJson.access_token, element);
     }
-    if (qBest) {
-      if (afters.length > 0)
-        await handleFetch(`https://oauth.reddit.com/r/${element}/best.json?count=${count}&after=${afterString}`, returnArr, tokenResJson.access_token, element);
-      else
-        await handleFetch(`https://oauth.reddit.com/r/${element}/best.json`, returnArr, tokenResJson.access_token, element);
-    }
-    if (qTopMonth) {
-      if (afters.length > 0)
-        await handleFetch(`https://oauth.reddit.com/r/${element}/top.json?t=month&count=${count}&after=${afterString}`, returnArr, tokenResJson.access_token, element);
-      else
-        await handleFetch(`https://oauth.reddit.com/r/${element}/top.json?t=month`, returnArr, tokenResJson.access_token, element);
-    }
-    if (qTopAll) {
-      if (afters.length > 0)
-        await handleFetch(`https://oauth.reddit.com/r/${element}/top.json?t=all&count=${count}&after=${afterString}`, returnArr, tokenResJson.access_token, element);
-      else
-        await handleFetch(`https://oauth.reddit.com/r/${element}/top.json?t=all`, returnArr, tokenResJson.access_token, element);
+    else {
+      if (qNew) {
+        await handleFetch(getUrl('qNew', element, afters, count, afterString), returnArr, tokenResJson.access_token, element);
+      }
+      if (qBest) {
+        await handleFetch(getUrl('qBest', element, afters, count, afterString), returnArr, tokenResJson.access_token, element);
+      }
+      if (qTopMonth) {
+        await handleFetch(getUrl('qTopMonth', element, afters, count, afterString), returnArr, tokenResJson.access_token, element);
+      }
+      if (qTopAll) {
+        await handleFetch(getUrl('qTopAll', element, afters, count, afterString), returnArr, tokenResJson.access_token, element);
+      }
     }
   }
   return json(returnArr);
@@ -70,7 +67,7 @@ const handleFetch = async (url: string, returnArr: any[], accessToken: string, s
   );
 
   const jsonResponse = await result.json();
-  const simpleData = jsonResponse.data.children.map((c: any) => {
+  const simpleData = jsonResponse.data.children.filter((c: any) => c.kind === "t3").map((c: any) => {
     const dataObj = c.data.crosspost_parent_list?.length > 0 && c.data.url?.toLowerCase().includes('gallery') ? c.data.crosspost_parent_list[0] : c.data;
     return {
       redditUrl: `https://reddit.com${c.data.permalink}`,
@@ -120,4 +117,69 @@ const handleFetch = async (url: string, returnArr: any[], accessToken: string, s
       });
     }
   });
+}
+
+const getUrl = (category: string, element: string, afters: any[], count: number, afterString: string) => {
+  if (category === "qNew")
+  {
+    if (element.includes('r/')) {
+      if (afters.length > 0)
+        return `https://oauth.reddit.com/${element}/new.json?count=${count}&after=${afterString}`;
+      else
+        return `https://oauth.reddit.com/${element}/new.json`;
+    }
+    if (element.includes('u/')) {
+      if (afters.length > 0)
+        return `https://oauth.reddit.com/${element}.json?sort=new&count=${count}&after=${afterString}`;
+      else
+        return `https://oauth.reddit.com/${element}.json?sort=new`;
+    }
+  }
+  if (category === "qBest")
+  {
+    if (element.includes('r/')) {
+      if (afters.length > 0)
+        return `https://oauth.reddit.com/${element}/best.json?count=${count}&after=${afterString}`;
+      else
+        return `https://oauth.reddit.com/${element}/best.json`;
+    }
+    if (element.includes('u/')) {
+      if (afters.length > 0)
+        return `https://oauth.reddit.com/${element}.json?sort=best&count=${count}&after=${afterString}`;
+      else
+        return `https://oauth.reddit.com/${element}.json?sort=best`;
+    }
+  }
+  if (category === "qTopMonth")
+  {
+    if (element.includes('r/')) {
+      if (afters.length > 0)
+        return `https://oauth.reddit.com/${element}/top.json?count=${count}&after=${afterString}`;
+      else
+        return `https://oauth.reddit.com/${element}/top.json`;
+    }
+    if (element.includes('u/')) {
+      if (afters.length > 0)
+        return `https://oauth.reddit.com/${element}.json?sort=top&count=${count}&after=${afterString}`;
+      else
+        return `https://oauth.reddit.com/${element}.json?sort=top`;
+    }
+  }
+  if (category === "qTopAll")
+  {
+    if (element.includes('r/')) {
+      if (afters.length > 0)
+        return `https://oauth.reddit.com/${element}/top.json?t=all&count=${count}&after=${afterString}`;
+      else
+        return `https://oauth.reddit.com/${element}/top.json&t=month`;
+    }
+    if (element.includes('u/')) {
+      if (afters.length > 0)
+        return `https://oauth.reddit.com/${element}.json?sort=top&t=all&count=${count}&after=${afterString}`;
+      else
+        return `https://oauth.reddit.com/${element}.json?sort=top&t=all`;
+    }
+  }
+
+  return '';
 }

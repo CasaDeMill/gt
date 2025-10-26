@@ -7,17 +7,19 @@
   let imageData: any[] = $state([]);
   let selected: string[] = $state([]);
   let avSubs = $state([
-    'throatpussy',
-    'cumonclothes',
-    'luckypierre',
-    'Lilijunexx',
-    'Rubbersissies',
-    'Miso_paradise',
-    'Slave_humiliation',
-    'Trulybrokengirls',
-    'Forcedorgasms2',
-    'Facefuck',
-    'Cumsluts'
+    'r/throatpussy',
+    'r/cumonclothes',
+    'r/luckypierre',
+    'r/Lilijunexx',
+    'r/Rubbersissies',
+    'r/Miso_paradise',
+    'r/Slave_humiliation',
+    'r/Trulybrokengirls',
+    'r/Forcedorgasms2',
+    'r/Facefuck',
+    'r/Cumsluts',
+    'u/JazzzBerrry',
+    'deepthroat',
   ]);
   let loading = $state(false);
   let fetchBlocked: boolean = $state(false);
@@ -52,7 +54,7 @@
   }
 
   const getMoreData = (percentage: number, scrollWidth: number) => {
-    if (percentage > 80 && !fetchBlocked && scrollWidth > 5000) {
+    if (percentage > 80 && !fetchBlocked && scrollWidth > 900) {
       count++;
       getData(imageData.map(x => ({
         subReddit: x.subReddit,
