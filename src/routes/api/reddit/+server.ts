@@ -33,7 +33,7 @@ export const POST: RequestHandler = async ({request}) => {
     const element = subReddits[index];
     const afterString = afters[afters.findLastIndex(x => x.subReddit === element)]?.after;
 
-    if (!element.includes('u/') && !element.includes('/r')){
+    if (!element.includes('u/') && !element.includes('r/')){
       if (afters.length > 0)
         await handleFetch(`https://oauth.reddit.com/search.json?q=${element}&count=${count}&after=${afterString}&include_over_18=on`, returnArr, tokenResJson.access_token, element);
       else
