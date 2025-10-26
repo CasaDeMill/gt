@@ -171,7 +171,7 @@ const getUrl = (category: string, element: string, afters: any[], count: number,
       if (afters.length > 0)
         return `https://oauth.reddit.com/${element}/top.json?t=all&count=${count}&after=${afterString}`;
       else
-        return `https://oauth.reddit.com/${element}/top.json&t=all`;
+        return `https://oauth.reddit.com/${element}/top.json?t=all`;
     }
     if (element.includes('u/')) {
       if (afters.length > 0)
