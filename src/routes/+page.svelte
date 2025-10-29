@@ -1,26 +1,15 @@
 <script lang="ts">
   import MultiSelect from 'svelte-multiselect'
+  import { PersistedState } from 'runed';
+
+  const persistedAvSubs = new PersistedState("avSubs", [] as string []);
+  let avSubs: string[] = $state(persistedAvSubs.current);
   let qNew: boolean = $state(true);
   let qBest: boolean = $state(false);
   let qTopMonth: boolean = $state(false);
   let qTopAll: boolean = $state(false);
   let imageData: any[] = $state([]);
   let selected: string[] = $state([]);
-  let avSubs = $state([
-    'r/throatpussy',
-    'r/cumonclothes',
-    'r/luckypierre',
-    'r/Lilijunexx',
-    'r/Rubbersissies',
-    'r/Miso_paradise',
-    'r/Slave_humiliation',
-    'r/Trulybrokengirls',
-    'r/Forcedorgasms2',
-    'r/Facefuck',
-    'r/Cumsluts',
-    'u/JazzzBerrry',
-    'deepthroat',
-  ]);
   let loading = $state(false);
   let fetchBlocked: boolean = $state(false);
   let count: number = $state(0);
@@ -62,6 +51,7 @@
       })));
     }
   }
+
 </script>
 
 {#if imageData.length > 0}
@@ -153,7 +143,15 @@
 {:else}
   <div class="setupContainer">
     <h1>Okeeeeej</h1>
-    <MultiSelect bind:selected options={avSubs} allowUserOptions='append' />
+    <MultiSelect
+      bind:selected
+      placeholder="r/, u/ or just text"
+      options={avSubs}
+      onadd={
+        (o) => persistedAvSubs.current.push(o.option.toString())
+      }
+      allowUserOptions='append'
+    />
     <div class="settingsWrapper">
       <label>
         <input id="punish" type="checkbox" bind:checked={qNew} />
